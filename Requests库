@@ -1,0 +1,74 @@
+requests请求库
+
+一、Http请求类型
+ 1.常用类型
+   #get类型（请求参数包含在URL中，一般用于词条检索）
+   r = requests.get('https://github.com/get')
+   #post类型（请求参数不包含在URL中，请求信息需要隐藏时使用，例如登录时密码需要隐藏）
+   r = requests.post("http://m.ctrip.com/post")
+ 2.不常用类型
+   #put类型 
+   r = requests.put("http://m.ctrip.com/put")
+   #delete类型
+   r = requests.delete("http://m.ctrip.com/delete")
+   #head类型
+   r = requests.head("http://m.ctrip.com/head")
+   #options类型
+   r = requests.options("http://m.ctrip.com/get")
+二、获取响应内容
+   r.content #以字节的方式去显示，中文显示为字符
+   r.text #以文本的方式去显示
+
+三、URL传递参数
+  1.
+   payload = {'keyword': '日本', 'salecityid': '2'}
+   r = requests.get("http://m.ctrip.com/webapp/tourvisa/visa_list", params=payload) 
+   print r.url #示例为http://m.ctrip.com/webapp/tourvisa/visa_list?salecityid=2&keyword=日本
+  2.#定制请求头
+  url = 'http://m.ctrip.com'
+  headers = {'User-Agent' : 'Mozilla/5.0 (Linux; Android 4.2.1; en-us; Nexus 4 Build/JOP40D) AppleWebKit/535.19 (KHTML,   like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19'}
+  r = requests.post(url, headers=headers)
+  请求头可以加，，也可以不加。网页的头部内容可以在“网页，右键单击“检查”中，Network的header中查看全部内容，preview代表网页源代码”
+
+四、获取或修改网页编码
+    r = requests.get('https://github.com/timeline.json')
+    r.encoding = 'utf-8'
+    注：网页的实际编码应是网页主体内容的编码
+
+五、Ajax请求返回的是Json格式的文本
+  1.#json处理
+    r = requests.get('https://github.com/timeline.json')
+    print r.json() #需要先import json 
+
+六、网页响应状态码：r.status_code
+  1.200表示正常响应
+  2.300以上表示网页页面跳转
+  3.404表示找不到网页或禁止访问
+  4.500以上表示服务器错误
+
+七、#Cookies
+   url = 'http://example.com/some/cookie/setting/url'
+   r = requests.get(url)
+   r.cookies['example_cookie_name']    #读取cookies
+    
+   url = 'http://m.ctrip.com/cookies'
+   cookies = dict(cookies_are='working')
+   r = requests.get(url, cookies=cookies) #发送cookies
+
+#设置超时时间
+r = requests.get('http://m.ctrip.com', timeout=0.001)
+
+#设置访问代理
+proxies = {
+           "http": "http://10.10.10.10:8888",
+           "https": "http://10.10.10.100:4444",
+          }
+r = requests.get('http://m.ctrip.com', proxies=proxies)
+
+八、网页解析方式
+  1.直接处理（网页比较简单，返回内容也比较简单，例如字符串处理）
+  2.json解析（Ajax）
+  3.正则表达式
+  4.解析库解析（beautifulsoup）
+  5.pyQuery、xPath
+  
