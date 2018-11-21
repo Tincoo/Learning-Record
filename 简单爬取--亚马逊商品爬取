@@ -1,0 +1,17 @@
+
+'''
+1.爬取网页内容返回不是“200”时，说明网页对爬虫有禁止措施 例如访问亚马逊是返回503 
+2.此时我们可以通过r.encoding查看网页编码，在通过r.apparent_encoding我们可以理解 内容的编码方式查看r.text里面会显示“意外错误”
+
+3.这时，我们查看网页源代码头部内容 r.request.headers会看到user-agent显示“Python-request”说明Python程序不能访问
+
+可以构造键值对模拟一个浏览器来访问
+4.kv = {'user-agent':'Mozilla/5.0'} Mozilla/5.0标准浏览器的标识字段 然后 requests.get(url,header=kv)即可成功访问
+ 
+ import requests 
+ url = "https://www.amazon.cn/gp/product/B01M8L5Z3Y" try: kv = {'user-agent':'Mozilla/5.0'} 
+ requests.get(url,headers=kv) 
+ r.raise_for_satus() 
+ r.encoding = r.apparent_encoding 
+ print(r.text[1000:2000]) 
+ except: print("爬取失败")
